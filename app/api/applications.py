@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
@@ -9,8 +11,21 @@ router = APIRouter(prefix="/applications", tags=["Заявки"])
 
 
 @router.get("", response_model=list[Application])
-def list_applications(session: Session = Depends(get_session)):
-    return session.exec(select(Application)).all()
+def list_applications(
+    status: Optional[str] = None,
+    course_id: Optional[int] = None,
+    student_id: Optional[int] = None,
+    session: Session = Depends(get_session),
+):
+    query = select(Application)
+    if status is not None:
+        query = query.where(Application.status == status)
+    if course_id is not None:
+        query = query.where(Application.course_id == course_id)
+    if student_id is not None:
+        query = query.where(Application.student_id == student_id)
+    query = query.order_by(Application.priority)
+    return session.exec(query).all()
 
 
 @router.get("/{application_id}", response_model=Application)
@@ -40,3 +55,13 @@ def create_application(data: ApplicationCreate, session: Session = Depends(get_s
     session.commit()
     session.refresh(application)
     return application
+
+
+@router.delete("/{application_id}")
+def delete_application(application_id: int, session: Session = Depends(get_session)):
+    application = session.get(Application, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    session.delete(application)
+    session.commit()
+    return {"message": "Заявка успешно удалена"}
