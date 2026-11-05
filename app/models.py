@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
@@ -30,7 +30,7 @@ class Application(SQLModel, table=True):
     course_id: int = Field(foreign_key="course.id")
     priority: int
     status: str = Field(default="new")
-    created_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     student: Optional[Student] = Relationship(back_populates="applications")
     course: Optional[Course] = Relationship(back_populates="applications")
