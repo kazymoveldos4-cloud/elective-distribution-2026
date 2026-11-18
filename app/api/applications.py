@@ -42,14 +42,28 @@ def create_application(data: ApplicationCreate, session: Session = Depends(get_s
         raise HTTPException(status_code=404, detail="Студент не найден")
     if not session.get(Course, data.course_id):
         raise HTTPException(status_code=404, detail="Курс не найден")
-    duplicate = session.exec(
+
+    duplicate_course = session.exec(
         select(Application).where(
             Application.student_id == data.student_id,
             Application.course_id == data.course_id,
         )
     ).first()
-    if duplicate:
+    if duplicate_course:
         raise HTTPException(status_code=409, detail="Заявка на этот курс уже подана")
+
+    duplicate_priority = session.exec(
+        select(Application).where(
+            Application.student_id == data.student_id,
+            Application.priority == data.priority,
+        )
+    ).first()
+    if duplicate_priority:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Заявка с приоритетом {data.priority} уже существует для данного студента",
+        )
+
     application = Application(**data.model_dump())
     session.add(application)
     session.commit()

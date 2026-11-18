@@ -1,0 +1,8 @@
+Method,Name,Error,Occurrences,First Seen,Last Seen
+POST,/courses [POST],HTTPError('500 Server Error: Internal Server Error for url: /courses [POST]'),4,2026-11-18T17:50:01Z,2026-11-18T17:51:01Z
+PATCH,/students/1 [PATCH],HTTPError('500 Server Error: Internal Server Error for url: /students/1 [PATCH]'),1,2026-11-18T17:51:31Z,2026-11-18T17:51:31Z
+GET,/applications,HTTPError('500 Server Error: Internal Server Error for url: /applications'),34,2026-11-18T17:49:31Z,2026-11-18T17:51:32Z
+GET,/courses?search=[term],HTTPError('500 Server Error: Internal Server Error for url: /courses?search=[term]'),32,2026-11-18T17:49:31Z,2026-11-18T17:51:32Z
+PATCH,/courses/1 [PATCH],HTTPError('500 Server Error: Internal Server Error for url: /courses/1 [PATCH]'),4,2026-11-18T17:50:01Z,2026-11-18T17:51:31Z
+GET,/applications?status=[status],HTTPError('500 Server Error: Internal Server Error for url: /applications?status=[status]'),15,2026-11-18T17:49:31Z,2026-11-18T17:51:32Z
+GET,/courses,HTTPError('500 Server Error: Internal Server Error for url: /courses'),32,2026-11-18T17:49:30Z,2026-11-18T17:51:32Z

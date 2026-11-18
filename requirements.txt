@@ -5,3 +5,8 @@ streamlit
 requests
 pytest
 httpx
+bandit
+pytest-timeout
+locust
+psutil
+matplotlib
